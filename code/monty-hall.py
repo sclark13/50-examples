@@ -87,6 +87,8 @@ def main():
     # Carry out the trials
     winning_non_switchers = 0
     winning_switchers = 0
+    winning_random_switchers = 0
+    truth_value = False
     for i in range(args.trials):
         # First, do a trial where the contestant never switches.
         won = simulate(args.doors, switch=False, verbose=args.verbose)
@@ -98,12 +100,21 @@ def main():
         if won:
             winning_switchers += 1
 
-    print('    Switching won {0:5} times out of {1} ({2}% of the time)'.format(
+        # Next, try one where the contestant switches doors randomly.
+        truth_value = random.choice([True, False])
+        won = simulate(args.doors, switch=truth_value, verbose=args.verbose)
+        if won:
+            winning_random_switchers += 1
+
+    print('       Switching won {0:5} times out of {1} ({2}% of the time)'.format(
             winning_switchers, args.trials,
             (winning_switchers / args.trials * 100 ) ))
-    print('Not switching won {0:5} times out of {1} ({2}% of the time)'.format(
+    print('   Not switching won {0:5} times out of {1} ({2}% of the time)'.format(
             winning_non_switchers, args.trials,
             (winning_non_switchers / args.trials * 100 ) ))
+    print('Random switching won {0:5} times out of {1} ({2}% of the time)'.format(
+            winning_random_switchers, args.trials,
+            (winning_random_switchers / args.trials * 100 ) ))
 
 
 if __name__ == '__main__':
